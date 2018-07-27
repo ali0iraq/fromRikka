@@ -27,16 +27,5 @@ client.user.setGame(`+help | By Jihad`,"http://twitch.tv/S-F")
   console.log('')
   console.log('')
 });
-
-
-
-client.on("message", message => {
-      if (message.content === "ping") {
-      const embed = new Discord.RichEmbed()
-  .setColor("RANDOM")
-  .addField('**Ping:**' , `${Date.now() - message.createdTimestamp}` + ' ms')
-  message.channel.sendEmbed(embed);
- 
-});
  
 client.login(process.env.BOT_TOKEN);
