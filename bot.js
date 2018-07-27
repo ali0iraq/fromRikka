@@ -379,14 +379,5 @@ client.on("message", message => {
   message.channel.sendEmbed(embed);
  
 });
-
-            
-if(message.content === prefix+"restart123") {
-        if(!message.channel.guild) return;
-      if(message.author.id !== "384435460564451328" ) return;
-      message.reply("**جارِ عمل ريستارت للبوت**").then(client =>{
-client.destroy().then(client.login(Token),1000)
-    },2000)
-    }
-            
+ 
 client.login(process.env.BOT_TOKEN);
