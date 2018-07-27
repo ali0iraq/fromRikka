@@ -1,1 +1,1 @@
-worker: node booot.js
+worker: node boot.js
