@@ -2,23 +2,6 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const prefix = '.'
 
-client.on('ready', function(){
-    var ms = 40000 ;
-    var setGame = ['+help','By Jihad'];
-    var i = -1;
-    var j = 0;
-    setInterval(function (){
-        if( i == -1 ){
-j = 1;
-       }
-        if( i == (setGame.length)-1 ){
-            j = -1;
-      }
-       i = i+j;
-        client.user.setGame(setGame[i],http://www.youtube.com/gg);
-}, ms);
-
-});
   console.log('')
   console.log('')
   console.log('╔[═════════════════════════════════════════════════════════════════]╗')
@@ -40,6 +23,24 @@ j = 1;
   console.log('╚[════════════]╝')
   console.log('')
   console.log('')
+});
+
+client.on('ready', function(){
+    var ms = 60000 ;
+    var setGame = ['+help','with jihad'];
+    var i = -1;
+    var j = 0;
+    setInterval(function (){
+        if( i == -1 ){
+            j = 1;
+        }
+        if( i == (setGame.length)-1 ){
+            j = -1;
+        }
+        i = i+j;
+        client.user.setGame(setGame[i],`http://www.twitch.tv/GamerzBot`);
+    }, ms);
+
 });
 
 client.on("message", message => {
