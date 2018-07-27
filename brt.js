@@ -42,13 +42,21 @@ client.on('ready', function(){
     }, ms);
 
 });
-
-client.on('message', message => {
-    if (message.author.id === client.user.id) return;
-            if (message.content.startsWith(prefix + "ping")) {
-        message.channel.sendMessage(':ping_pong: Pong! In `' + `${client.ping}` + ' ms`');
+client.on('message', function(message) {
+    if(message.content.startsWith(prefix + 'roll')) {
+        let args = message.content.split(" ").slice(1);
+        if (!args[0]) {
+            message.channel.send('**حط رقم معين يتم السحب منه**');
+            return;
+            }
+    message.channel.send(Math.floor(Math.random() * args.join(' ')));
+            if (!args[0]) {
+          message.edit('1')
+          return;
+        }
     }
 });
+
 
  
 client.login(process.env.BOT_TOKEN);
