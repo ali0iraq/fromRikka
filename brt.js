@@ -43,13 +43,10 @@ client.on('ready', function(){
 
 });
 
-client.on("message", message => {
-      if (message.content === "+ping") {
-      const embed = new Discord.RichEmbed()
-  .setColor("RANDOM")
-  .addField('     **=-=-=-=-=-=-=** ' ,' ** :smiley:  pong!**')
-  .addField('** : سرعة الإتصال هي**' , `${Date.now() - message.createdTimestamp}` + ' ms')
-  message.channel.sendEmbed(embed);
+client.on('message', message => {
+    if (message.author.id === client.user.id) return;
+            if (message.content.startsWith(prefix + "ping")) {
+        message.channel.sendMessage(':ping_pong: Pong! In `' + `${client.ping}` + ' ms`');
     }
 });
 
