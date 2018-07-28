@@ -40,7 +40,7 @@ client.on('message', msg => {
 
 client.on('ready', function(){
     var ms = 60000 ;
-    var setGame = ['+help','with jihad'];
+    var setGame = ['with jihad'];
     var i = -1;
     var j = 0;
     setInterval(function (){
