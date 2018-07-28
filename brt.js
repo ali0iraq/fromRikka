@@ -43,15 +43,6 @@ client.on('message', message => {
     }
 });
 
-client.on('message', message => {
-            if (message.content.startsWith(prefix + "help")) {
-     let embed = new Discord.RichEmbed()
-.setThumbnail(message.author.avatarURL)
-.addField('     **+clear** ' ,' **Delete chats* ')
-.setColor('#7d2dbe')
-  message.channel.sendEmbed(embed);
-    }
-});
 
 ////////////////////////////////////////
 
