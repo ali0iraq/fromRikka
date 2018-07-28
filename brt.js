@@ -62,7 +62,7 @@ client.on('message', message => {
     } else
 
      if (message.content.startsWith(prefix + 'st')) {
-        client.user.setGame(argresult, "https://www.twitch.tv/idk");
+        client.user.setGame(argresult, "https://www.twitch.tv/almerjanytv");
         message.channel.send(`**Ok, Streaming..** **${argresult}!**`)
     }
 
