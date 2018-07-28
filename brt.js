@@ -56,7 +56,7 @@ client.on('message', msg => {
     if(msg.member.hasPermission("MANAGE_MESSAGES")) {
     if (textxt == "") {
         msg.delete().then
-    msg.channel.send("***```300 👌```***").then(m => m.delete(3000));
+    msg.channel.send("***```50 👌```***").then(m => m.delete(3000));
 } else {
     msg.delete().then
     msg.delete().then
