@@ -33,6 +33,9 @@ client.on('ready', () => {
 
 /////////////////////////////////////////
 
+client.on('ready', () => {
+    client.user.setGame(with jihad)
+});
 
 client.on('message', message => {
     if (message.author.bot) return;
