@@ -30,6 +30,7 @@ client.on('ready', () => {
 
 
 
+
 /////////////////////////////////////////
 
 client.on("message", message => { //clear
@@ -60,6 +61,30 @@ client.on('message', message => {
     if (message.content.startsWith(prefix + 'ping')) {
         message.channel.sendMessage('Pong! Your ping is `' + `${Date.now() - message.createdTimestamp}` + ' ms`');
     }
+});
+
+client.on('message', msg => {
+  if (msg.author.bot) return;
+  if (!msg.content.startsWith(prefix)) return;
+  let command = msg.content.split(" ")[0];
+  command = command.slice(prefix.length);
+  let args = msg.content.split(" ").slice(1);
+
+    if(command === "clear") {
+        const emoji = client.emojis.find("name", "wastebasket")
+    let textxt = args.slice(0).join("");
+    if(msg.member.hasPermission("MANAGE_MESSAGES")) {
+    if (textxt == "") {
+        msg.delete().then
+    msg.channel.send("***```3000 👌```***").then(m => m.delete(3000));
+} else {
+    msg.delete().then
+    msg.delete().then
+    msg.channel.bulkDelete(textxt);
+        msg.channel.send("```php\n Number of messages that have been cleared: " + textxt + "\n```").then(m => m.delete(3000));
+        }    
+    }
+}
 });
 ////////////////////////////////////////
 
