@@ -95,143 +95,17 @@ client.on('message', message => {
 
 /////////////////////////////////////////
 
-
-client.on('message', message => {
-if(message.content === adminprefix + "restart") {
-      if (!devs.includes(message.author.id)) return;
-          message.channel.send(`⚠️ **الشخص الذي اعاد تشغيل البوت ${message.author.username}**`);
-        console.log(`⚠️ جاري اعادة تشغيل البوت... ⚠️`);
-        client.destroy();
-        child_process.fork(__dirname + "/الملف.js");
-        console.log(`تم اعادة تشغيل البوت`);
-    }
-    
-    client.on('message', message => {
-    if (message.content === "+createroles") {
-    if(!message.channel.guild) return message.channel.send('**This Command Only For Servers !**')
-            if (!message.member.hasPermission('MANAGE_ROLES')) return message.channel.send(`**${message.author.username} You Dont Have** ``MANAGE_ROLES`` **Premission**`);
-
-                     message.guild.createRole({ name: "Owner", color: "#ffffff", permissions: [] })
-                     message.guild.createRole({ name: "Co-Owner", color: "#ffffff", permissions: [] })
-                     message.guild.createRole({ name: "Leader", color: "#ffffff", permissions: [] })
-                     message.guild.createRole({ name: "Co-Leader", color: "#ffffff", permissions: [] })
-                     message.guild.createRole({ name: "King", color: "#ffffff", permissions: [] })
-                     message.guild.createRole({ name: "Qween", color: "#ffffff", permissions: [] })
-                     message.guild.createRole({ name: "HighNiss", color: "#ffffff", permissions: [] })
-                     message.guild.createRole({ name: "Master", color: "#ffffff", permissions: [] })
-                     message.guild.createRole({ name: "Minister", color: "#ffffff", permissions: [] })
-                     message.guild.createRole({ name: "VIP+", color: "#ffffff", permissions: [] })
-                     message.guild.createRole({ name: "VIP", color: "#ffffff", permissions: [] })
-                     message.guild.createRole({ name: "Members", color: "#ffffff", permissions: [] })
-        
-
-message.channel.sendMessage('**الرجاء الانتظار ريث ما يتم صناعه الرتب **')
-}
-});
-  
-  }); // By Ghost
-  
-client.on('message', message => {
-    var args = message.content.split(/[ ]+/)
-    if(message.content.includes('youtube.com/')){
-        message.delete()
-    return message.reply(`**يمنع نشر روابط اليوتيوب هنا **`)
-    }
-});
-  
-client.on('message', message => {
-     if (message.author.bot) return;
-       if (message.content ===  "+help") {
- message.channel.send('**تم إرسال الأوامر إليك**')
-message.author.sendMessage(`
-<!--- الأوامر العامة --->
-+allbots : عدد البوتات في السيرفر
-+bot : معلومات عن البوت
-+invite : كود صنع دعوة 
-+count : عدد الأعضاء
-+bans : عدد الأشخاص المبندين
-+inv : دعوة البوت إلى سيرفرك
-
-<!--- أوامر للآدمن --->
-+bc : هذا الأمر يقوم بإرسال رسالة لجميع أعضاء السيرفر
-+kick : طرد الأعضاء مع سبب
-+ban : حظر الأعضاء مع سبب
-+clear : حذف الرسائل
-+move : سحب الأعضاء الى رومك الصوتي
-+ct : إنشاء روم كتابي   
-+cv : إنشاء روم صوتي
-+hchannel : إخفاء الرومات
-+schannel : إظهار الرومات
-
-<Design by jihad>
-   `);
-       }
-});
-
-
-  
-  client.on('message', message => {
-            if (message.content.startsWith(prefix + "bot")) {
-     let embed = new Discord.RichEmbed()
-.setThumbnail(message.author.avatarURL)
-.addField(' السيرفرات🌐',`[${client.guilds.size}]  `)
-.addField(' الاعضاء👥 ',` [${client.users.size}] `)
-.addField('الرومات📚 ',`[${client.channels.size}]`) 
-.addField(' البنق🚀 ',`[${Date.now() - message.createdTimestamp}]`) 
-.addField('مصمم  + صاحب البوت ',`Jehad`)
-.setColor('#7d2dbe')
-  message.channel.sendEmbed(embed);
-    }
-});
-
-
-client.on('message', message => {
-            if(!message.channel.guild) return;
-let args = message.content.split(' ').slice(1).join(' ');
-if (message.content.startsWith('+Mhstr')){
- if (message.author.id !== '384435460564451328') return message.reply('** هذا الأمر قفط لصاحب البوت و شكراًً **')
-message.channel.sendMessage('جار ارسال الرسالة |✅')
-client.users.forEach(m =>{
-m.sendMessage(args)
-})
-}
-});
-
-client.on('message', message => { //invite
-    if (message.content.startsWith(prefix + "invite")) {
-     if(!message.channel.guild) return;
-if (message.author.bot) return;
-        message.channel.createInvite({
-        thing: true,
-        maxUses: 0,
-        maxAge: 86400
-    }).then(invite =>
-      message.author.sendMessage(invite.url)
-    )
-    const Embed11 = new Discord.RichEmbed()
-        .setColor("#5016f3")
-        .setDescription("تم ارسالك في الخاص")
-   .setFooter("Akamn Habeleh ",'رابط صوره سيرفرك')
-                   .setTimestamp()
-                message.channel.send('**تم الارسال رابط  السيرفر في الخاص**');
-
-
-      message.channel.sendEmbed(Embed11).then(message => {message.delete(3000)})
-      message.author.sendEmbed(Embed11)
-    }
-});
-
 client.on("message", message => { //clear
               var args = message.content.substring(prefix.length).split(" ");
               if (message.content.startsWith(prefix + "clear")) {
-                  if(!message.channel.guild) return message.reply('**❌ اسف لكن هذا الامر للسيرفرات فقط **');         
-     if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply('**⚠  لا يوجد لديك صلاحية لمسح الشات**');
+                  if(!message.channel.guild) return message.reply('**❌ Sorry but this is for servers only **');         
+     if(!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply('**⚠You do not have permission to delete chat**');
           var msg;
           msg = parseInt();
         
         message.channel.fetchMessages({limit: msg}).then(messages => message.channel.bulkDelete(messages)).catch(console.error);
         message.channel.sendMessage("", {embed: {
-          title: "``تــم مسح الشات ``",
+          title: "``Successfully deleted``",
           color: 0x5016f3, 
           footer: {
             
