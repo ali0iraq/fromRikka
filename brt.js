@@ -61,11 +61,6 @@ client.on('message', message => {
         message.channel.send(`**Ok, listening to..** **${argresult}!**`)
     } else
 
-     if (message.content.startsWith(prefix + 'st')) {
-        client.user.setGame(argresult, "https://www.twitch.tv/almerjanytv");
-        message.channel.send(`**Ok, Streaming..** **${argresult}!**`)
-    }
-
      if (message.content.startsWith(adminprefix + 'set-name')) {
         client.user.setUsername(argresult).then
         message.channel.send(`**Changing my name to..** **${argresult}!** `)
