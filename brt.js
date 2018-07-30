@@ -102,8 +102,6 @@ if(message.content === prefix + "restart") {
     }
 });
 
-
-
 const child_process = require("child_process");
 const devs = ['396958215377780747'];
 
@@ -118,8 +116,6 @@ if(message.content === prefix + "restart") {
     }
   
   });
-
-
 
 
 ////////////////////////////////////////
