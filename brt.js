@@ -80,19 +80,6 @@ client.on('message', message => {
 
 });
 
-client.on('message', message => {
-    if (const child_process = require("child_process");
-const devs = ['396958215377780747'];
-
-client.on('message', message => {
-if(message.content === prefix + "restart") {
-      if (!devs.includes(message.author.id)) return;
-          message.channel.send(⚠️ **الشخص الذي اعاد تشغيل البوت ${message.author.username}**);
-        console.log(⚠️ جاري اعادة تشغيل البوت... ⚠️);
-        client.destroy();
-        child_process.fork(__dirname + "/الملف.js");
-        console.log(تم اعادة تشغيل البوت);
-    }
   
   });.author.bot) return;
     if (!message.content.startsWith(prefix)) return;
