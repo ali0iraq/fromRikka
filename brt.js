@@ -81,7 +81,8 @@ client.on('message', message => {
 });
 
 client.on('message', message => {
- if(message.content.startsWith(prefix +"server")){
+     var jehad ="+"; // هنا تقدر تغيير برفكس البوت
+ if(message.content.startsWith(jehad +"server")){
 if(!message.channel.guild) return message.reply(' ');
 const millis = new Date().getTime() - message.guild.createdAt.getTime();
 const now = new Date();
