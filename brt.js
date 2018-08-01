@@ -88,7 +88,7 @@ client.on('message', async message => {
   let command = args[0];
 
   if(message.content.startsWith(prefix + "clear")) {
-    if(!message.member.hasPermission("MANAGEP_MESSAGES")) return message.reply('**انت لا تملك الخصائص الكافية.**').then(msg => {
+    if(!message.member.hasPermission("MANAGEP_MESSAGES")) return message.reply('**You do not have enough characteristics.**').then(msg => {
       msg.delete(3500);
       message.delete(3500);
     });
@@ -107,7 +107,7 @@ client.on('message', async message => {
           limit: msg
         }).then(m => {
           message.channel.bulkDelete(msg).then(() => {
-            message.channel.send(`${message.author},\n\`\`\`تم مسح الرسائل بنجاح\`\`\``).then(msg => {
+            message.channel.send(`${message.author},\n\`\`\`Messages successfully cleared\`\`\``).then(msg => {
               msg.delete(3000);
             });
           });
@@ -135,7 +135,7 @@ client.on('message', async message => {
             limit: msg
           }).then(m => {
             message.channel.bulkDelete(m).then(() => {
-                message.channel.send(`${message.author},\n\`\`\`تم مسح الرسائل بنجاح\`\`\``).then(msg => {
+                message.channel.send(`${message.author},\n\`\`\`Messages successfully cleared\`\`\``).then(msg => {
               msg.delete(3000);
                   });
             });
@@ -152,7 +152,7 @@ client.on('message', async message => {
             limit: msg
           }).then(m => {
             message.channel.bulkDelete(m).then(() => {
-            message.channel.send(`${message.author},\n\`\`\`تم مسح الرسائل بنجاح\`\`\``).then(msg => {
+            message.channel.send(`${message.author},\n\`\`\`Messages successfully cleared\`\`\``).then(msg => {
               msg.delete(3000);
                   });
             });
