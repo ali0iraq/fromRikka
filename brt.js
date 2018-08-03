@@ -163,6 +163,13 @@ client.on('message', async message => {
   }
 });
 
+client.on('message', message => {
+	if message.content.startsWith("diaa");
+	message.reply("wa7ad m7taram");
+}
+
+});
+
 ////////////////////////////////////////
 
 client.login(process.env.BOT_TOKEN);
