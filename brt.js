@@ -33,7 +33,7 @@ client.on('ready', () => {
 
 /////////////////////////////////////////
 
-const developers = ["384435460564451328"]
+const developers = ['140377006691975169' , "384435460564451328"]
 
 client.on('message', message => {
     var argresult = message.content.split(` `).slice(1).join(' ');
@@ -163,12 +163,6 @@ client.on('message', async message => {
   }
 });
 
-client.on('message', message => {
-	if message.content.startsWith("diaa");
-	message.reply("wa7ad m7taram");
-}
-
-});
 
 ////////////////////////////////////////
 
