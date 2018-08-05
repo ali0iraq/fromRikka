@@ -119,7 +119,7 @@ client.on('message', async message => {
               limit: msg
           }).then(m => {
               message.channel.bulkDelete(m).then(() => {
-                  message.channel.send(`${message.author},\n\`\`\`تم مسح الرسائل بنجاح\`\`\``).then(msg => {
+                  message.channel.send(`${message.author},\n\`\`\`Messages successfully cleared\`\`\``).then(msg => {
               msg.delete(3000);
                   });
               });
