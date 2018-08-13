@@ -1,169 +1,98 @@
-const Discord = require('discord.js');
-const client = new Discord.Client();
-const prefix = '+'
-const adminprefix = 'xxx'
+const { Client } = require('discord.js');
+const yt = require('ytdl-core');
+const tokens = require('./tokens.json');
+const client = new Client();
+const prefix = '!!!'
+
+let queue = {};
+
+const commands = {
+	'play': (msg) => {
+		if (queue[msg.guild.id] === undefined) return msg.channel.sendMessage(`Add some songs to the queue first with ${tokens.prefix}add`);
+		if (!msg.guild.voiceConnection) return commands.join(msg).then(() => commands.play(msg));
+		if (queue[msg.guild.id].playing) return msg.channel.sendMessage('Already Playing');
+		let dispatcher;
+		queue[msg.guild.id].playing = true;
+
+		console.log(queue);
+		(function play(song) {
+			console.log(song);
+			if (song === undefined) return msg.channel.sendMessage('Queue is empty').then(() => {
+				queue[msg.guild.id].playing = false;
+				msg.member.voiceChannel.leave();
+			});
+			msg.channel.sendMessage(`Playing: **${song.title}** as requested by: **${song.requester}**`);
+			dispatcher = msg.guild.voiceConnection.playStream(yt(song.url, { audioonly: true }), { passes : tokens.passes });
+			let collector = msg.channel.createCollector(m => m);
+			collector.on('message', m => {
+				if (m.content.startsWith(tokens.prefix + 'pause')) {
+					msg.channel.sendMessage('paused').then(() => {dispatcher.pause();});
+				} else if (m.content.startsWith(tokens.prefix + 'resume')){
+					msg.channel.sendMessage('resumed').then(() => {dispatcher.resume();});
+				} else if (m.content.startsWith(tokens.prefix + 'skip')){
+					msg.channel.sendMessage('skipped').then(() => {dispatcher.end();});
+				} else if (m.content.startsWith('volume+')){
+					if (Math.round(dispatcher.volume*50) >= 100) return msg.channel.sendMessage(`Volume: ${Math.round(dispatcher.volume*50)}%`);
+					dispatcher.setVolume(Math.min((dispatcher.volume*50 + (2*(m.content.split('+').length-1)))/50,2));
+					msg.channel.sendMessage(`Volume: ${Math.round(dispatcher.volume*50)}%`);
+				} else if (m.content.startsWith('volume-')){
+					if (Math.round(dispatcher.volume*50) <= 0) return msg.channel.sendMessage(`Volume: ${Math.round(dispatcher.volume*50)}%`);
+					dispatcher.setVolume(Math.max((dispatcher.volume*50 - (2*(m.content.split('-').length-1)))/50,0));
+					msg.channel.sendMessage(`Volume: ${Math.round(dispatcher.volume*50)}%`);
+				} else if (m.content.startsWith(tokens.prefix + 'time')){
+					msg.channel.sendMessage(`time: ${Math.floor(dispatcher.time / 60000)}:${Math.floor((dispatcher.time % 60000)/1000) <10 ? '0'+Math.floor((dispatcher.time % 60000)/1000) : Math.floor((dispatcher.time % 60000)/1000)}`);
+				}
+			});
+			dispatcher.on('end', () => {
+				collector.stop();
+				play(queue[msg.guild.id].songs.shift());
+			});
+			dispatcher.on('error', (err) => {
+				return msg.channel.sendMessage('error: ' + err).then(() => {
+					collector.stop();
+					play(queue[msg.guild.id].songs.shift());
+				});
+			});
+		})(queue[msg.guild.id].songs.shift());
+	},
+	'join': (msg) => {
+		return new Promise((resolve, reject) => {
+			const voiceChannel = msg.member.voiceChannel;
+			if (!voiceChannel || voiceChannel.type !== 'voice') return msg.reply('I couldn\'t connect to your voice channel...');
+			voiceChannel.join().then(connection => resolve(connection)).catch(err => reject(err));
+		});
+	},
+	'add': (msg) => {
+		let url = msg.content.split(' ')[1];
+		if (url == '' || url === undefined) return msg.channel.sendMessage(`You must add a YouTube video url, or id after ${tokens.prefix}add`);
+		yt.getInfo(url, (err, info) => {
+			if(err) return msg.channel.sendMessage('Invalid YouTube Link: ' + err);
+			if (!queue.hasOwnProperty(msg.guild.id)) queue[msg.guild.id] = {}, queue[msg.guild.id].playing = false, queue[msg.guild.id].songs = [];
+			queue[msg.guild.id].songs.push({url: url, title: info.title, requester: msg.author.username});
+			msg.channel.sendMessage(`added **${info.title}** to the queue`);
+		});
+	},
+	'queue': (msg) => {
+		if (queue[msg.guild.id] === undefined) return msg.channel.sendMessage(`Add some songs to the queue first with ${tokens.prefix}add`);
+		let tosend = [];
+		queue[msg.guild.id].songs.forEach((song, i) => { tosend.push(`${i+1}. ${song.title} - Requested by: ${song.requester}`);});
+		msg.channel.sendMessage(`__**${msg.guild.name}'s Music Queue:**__ Currently **${tosend.length}** songs queued ${(tosend.length > 15 ? '*[Only next 15 shown]*' : '')}\n\`\`\`${tosend.slice(0,15).join('\n')}\`\`\``);
+	},
+	'help': (msg) => {
+		let tosend = ['```xl', tokens.prefix + 'join : "Join Voice channel of msg sender"',	tokens.prefix + 'add : "Add a valid youtube link to the queue"', tokens.prefix + 'queue : "Shows the current queue, up to 15 songs shown."', tokens.prefix + 'play : "Play the music queue if already joined to a voice channel"', '', 'the following commands only function while the play command is running:'.toUpperCase(), tokens.prefix + 'pause : "pauses the music"',	tokens.prefix + 'resume : "resumes the music"', tokens.prefix + 'skip : "skips the playing song"', tokens.prefix + 'time : "Shows the playtime of the song."',	'volume+(+++) : "increases volume by 2%/+"',	'volume-(---) : "decreases volume by 2%/-"',	'```'];
+		msg.channel.sendMessage(tosend.join('\n'));
+	},
+	'reboot': (msg) => {
+		if (msg.author.id == tokens.adminID) process.exit(); //Requires a node module like Forever to work.
+	}
+};
 
 client.on('ready', () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-  console.log('')
-  console.log('')
-  console.log('╔[═════════════════════════════════════════════════════════════════]╗')
-  console.log(`[Start] ${new Date()}`);
-  console.log('╚[═════════════════════════════════════════════════════════════════]╝')
-  console.log('')
-  console.log('╔[════════════════════════════════════]╗');
-  console.log(`Logged in as * [ " ${client.user.username} " ]`);
-  console.log('')
-  console.log('Informations :')
-  console.log('')
-  console.log(`servers! [ " ${client.guilds.size} " ]`);
-  console.log(`Users! [ " ${client.users.size} " ]`);
-  console.log(`channels! [ " ${client.channels.size} " ]`);
-  console.log('╚[════════════════════════════════════]╝')
-  console.log('')
-  console.log('╔[════════════]╗')
-  console.log(' Bot Is Online')
-  console.log('╚[════════════]╝')
-  console.log('')
-  console.log('')
+	console.log('ready!');
 });
 
-
-
-
-/////////////////////////////////////////
-
-const developers = ['140377006691975169' , "384435460564451328"]
-
-client.on('message', message => {
-    var argresult = message.content.split(` `).slice(1).join(' ');
-      if (!developers.includes(message.author.id)) return;
-      
-      if (message.content.startsWith(prefix + 'ply')) {
-        client.user.setGame(argresult);
-        message.channel.send(`**Ok, playing..** **${argresult}!**`)
-
-    } else
-
-      if (message.content === (prefix + "leave")) {
-        message.guild.leave();
-
-    } else
-
-      if (message.content.startsWith(prefix + 'wt')) {
-        client.user.setActivity(argresult, {type:'WATCHING'});
-        message.channel.send(`**Ok, watching..** **${argresult}!**`)
-
-    } else
-
-     if (message.content.startsWith(prefix + 'ls')) {
-        client.user.setActivity(argresult , {type:'LISTENING'});
-        message.channel.send(`**Ok, listening to..** **${argresult}!**`)
-    } else
-
-     if (message.content.startsWith(adminprefix + 'set-name')) {
-        client.user.setUsername(argresult).then
-        message.channel.send(`**Changing my name to..** **${argresult}!** `)
-
-    } else
-
-     if (message.content.startsWith(prefix + 'set-avatar')) {
-        client.user.setAvatar(argresult);
-        message.channel.send(`**Changing my avatar to..** ${argresult}`);
-
-    } else
-
-    if (message.content.startsWith(prefix + 'set-status')) {
-        client.user.setStatus(argresult)
-        message.channel.send(`**Ok, status changed to..** **${argresult}!**`)
-    }
-
+client.on('message', msg => {
+	if (!msg.content.startsWith(tokens.prefix)) return;
+	if (commands.hasOwnProperty(msg.content.toLowerCase().slice(tokens.prefix.length).split(' ')[0])) commands[msg.content.toLowerCase().slice(tokens.prefix.length).split(' ')[0]](msg);
 });
-
-client.on('message', async message => {
-  if(message.author.bot) return;
-  if(message.channel.type === "dm") return;
-
-  let args = message.content.split(" ");
-  let command = args[0];
-
-  if(message.content.startsWith(prefix + "clear")) {
-    if(!message.member.hasPermission("MANAGEP_MESSAGES")) return message.reply('**You do not have enough characteristics.**').then(msg => {
-      msg.delete(3500);
-      message.delete(3500);
-    });
-
-    if(!args[1]) {
-      var stop = true;
-      var msg = parseInt(100);
-
-      stop = false;
-      setTimeout(() => {
-        stop = true;
-      },3005);
-      setInterval(() => {
-        if(stop === true) return;
-        message.channel.fetchMessages({
-          limit: msg
-        }).then(m => {
-          message.channel.bulkDelete(msg).then(() => {
-            message.channel.send(`${message.author},\n\`\`\`Messages successfully cleared\`\`\``).then(msg => {
-              msg.delete(3000);
-            });
-          });
-        });
-      },1000);
-    } else if(args[1]) {
-      if(args[1] <= 100) {
-          message.channel.fetchMessages({
-              limit: msg
-          }).then(m => {
-              message.channel.bulkDelete(m).then(() => {
-                  message.channel.send(`${message.author},\n\`\`\`Messages successfully cleared\`\`\``).then(msg => {
-              msg.delete(3000);
-                  });
-              });
-          });
-      } else if(args[1] <= 200) {
-        stop = true;
-        setTimeout(() => {
-          stop = false;
-        },2001);
-        setInterval(() => {
-          if(stop === true) return;
-          message.channel.fetchMessages({
-            limit: msg
-          }).then(m => {
-            message.channel.bulkDelete(m).then(() => {
-                message.channel.send(`${message.author},\n\`\`\`Messages successfully cleared\`\`\``).then(msg => {
-              msg.delete(3000);
-                  });
-            });
-          });
-        },1000);
-      } else if(args[1] <= 300) {
-        stop = true;
-        setTimeout(() => {
-          stop = false;
-        },2001);
-        setInterval(() => {
-          if(stop === true) return;
-          message.channel.fetchMessages({
-            limit: msg
-          }).then(m => {
-            message.channel.bulkDelete(m).then(() => {
-            message.channel.send(`${message.author},\n\`\`\`Messages successfully cleared\`\`\``).then(msg => {
-              msg.delete(3000);
-                  });
-            });
-          });
-        });
-      }
-    }
-  }
-});
-
-
-////////////////////////////////////////
-
-client.login(process.env.BOT_TOKEN);
+client.login(tokens.d_token);
