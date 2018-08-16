@@ -1,42 +1,6 @@
-
-Save New Duplicate & Edit Just Text Twitter
-1
-2
-3
-4
-5
-6
-7
-8
-9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20
-21
-22
-23
-24
-25
-26
-27
-28
-29
-30
-31
-32
-33
-34
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const prefix = '.'
+const prefix = '+'
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -64,6 +28,39 @@ client.user.setGame(`Nothing`,"http://twitch.tv/S-F")
   console.log('')
 });
 
+client.on('message', message => {
+  if (message.guild) {
+ let embed = new Discord.RichEmbed()
+  let args = message.content.split(' ').slice(1).join(' ');
+if(message.content.split(' ')[0] == prefix + 'bc') {
+  if (!args[1]) {
+message.channel.send("**^bc <message>**");
+return;
+}
+      message.guild.members.forEach(m => {
+ if(!message.member.hasPermission('ADMINISTRATOR')) return;
+          var bc = new Discord.RichEmbed()
+          .setAuthor(message.author.username, message.author.avatarURL)
+          .addField(' The server', `${message.guild.name}`, true)
+          .addField(' who sended the messege ', `${message.author.username}!${message.author.discriminator}`, true)
+          .addField(' the messege ', args)
+          .setThumbnail(message.guild.iconURL)
+          .setColor('RANDOM')
+          m.send(`${m}`,{embed: bc});
+      });
+      const unknown = new Discord.RichEmbed()
+      .setAuthor(message.author.username, message.author.avatarURL)
+      .setTitle('✅| the messege is loading ')
+      .addBlankField(true)
+      .addField('♨| i got sended to  ', message.guild.memberCount , true)
+      .addField('📝| the message ', args)
+      .setColor('RANDOM')
+      message.channel.sendEmbed(embed);
+  }
+  } else {
+      return;
+  }
+});
 
 
 
