@@ -33,6 +33,7 @@ LET'S GO!
 client.on('ready', function(){
     client.user.setStatus("dnd");
     var ms = 10000 ;
+    var setGame = [`${PREFIX}help`];
     var i = -1;
     var j = 0;
     setInterval(function (){
@@ -43,7 +44,7 @@ client.on('ready', function(){
             j = -1;
         }
         i = i+j;
-        client.user.setGame(setGame[i],`https://www.twitch.tv/`);
+        client.user.setGame(setGame[i],`https://www.twitch.tv/skwadraa`);
     }, ms);10000
 
 });
@@ -476,7 +477,7 @@ client.on('message', message => {
   if (message.author.id !== "439187325503930369") return;
 
 if (message.content.startsWith(PREFIX + 'setstream')) {
-  client.user.setGame(argresult, "https://www.twitch.tv");
+  client.user.setGame(argresult, "https://www.twitch.tv/darkknite55");
 	 console.log('test' + argresult);
     message.channel.sendMessage(`Streaming: **${argresult}`)
 }
@@ -491,6 +492,4 @@ if (message.content.startsWith(PREFIX + 'setavatar')) {
    message.channel.sendMessage(`Avatar Changed Successfully To **${argresult}**`);
 }
 });
-
-
 client.login(process.env.BOT_TOKEN);
