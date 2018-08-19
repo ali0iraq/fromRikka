@@ -33,7 +33,7 @@ LET'S GO!
 client.on('ready', function(){
     client.user.setStatus("dnd");
     var ms = 10000 ;
-    var setGame = [`${PREFIX}help`];
+    var setGame = [``];
     var i = -1;
     var j = 0;
     setInterval(function (){
@@ -44,7 +44,7 @@ client.on('ready', function(){
             j = -1;
         }
         i = i+j;
-        client.user.setGame(setGame[i],`https://www.twitch.tv/skwadraa`);
+        client.user.setGame(setGame[i],`https://www.twitch.tv/`);
     }, ms);10000
 
 });
