@@ -7,7 +7,7 @@ const GOOGLE_API_KEY = 'AIzaSyAdORXg7UZUo7sePv97JyoDqtQVi3Ll0b8';
 const youtube = new YouTube(GOOGLE_API_KEY);
 
 const queue = new Map();
-const PREFIX = '+';
+const PREFIX = '$';
 client.on('warn', console.warn);
 
 client.on('error', console.error);
@@ -33,6 +33,7 @@ LET'S GO!
 client.on('ready', function(){
     client.user.setStatus("dnd");
     var ms = 10000 ;
+    var setGame = [`${PREFIX}help`];
     var i = -1;
     var j = 0;
     setInterval(function (){
@@ -476,7 +477,7 @@ client.on('message', message => {
   if (message.author.id !== "439187325503930369") return;
 
 if (message.content.startsWith(PREFIX + 'setstream')) {
-  client.user.setGame(argresult, "https://www.twitch.tv/darkknite55");
+  client.user.setGame(argresult, "https://www.twitch.tv/");
 	 console.log('test' + argresult);
     message.channel.sendMessage(`Streaming: **${argresult}`)
 }
