@@ -494,7 +494,7 @@ if (message.content.startsWith(PREFIX + 'setavatar')) {
 });
 
 client.on('message', message => {
-     if(message.content.startsWith(prefix + "clear")) {
+     if(message.content.startsWith(PREFIX + "clear")) {
          var args = message.content.split(" ").slice(1);
  if (!message.member.hasPermission('MANAGE_MESSAGES')) return message.reply('You need MANAGE_MESSAGES permission noob');
   if (!args[0]) return message.channel.send('You didn't provide any number!!!');
